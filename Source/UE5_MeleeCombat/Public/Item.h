@@ -12,15 +12,22 @@ class UE5_MELEECOMBAT_API AItem : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+	
 	AItem();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	template<typename T>
+	T Minus(T First, T Second);
+
+protected:
+	
+	virtual void BeginPlay() override;
+	
+
 };
+
+template<typename T>
+inline T AItem::Minus(T First, T Second)
+{
+	return (First - Second);
+}
