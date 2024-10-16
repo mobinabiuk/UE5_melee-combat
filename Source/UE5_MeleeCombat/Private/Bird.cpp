@@ -8,6 +8,10 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include <EnhancedInputComponent.h>
+#include "EnhancedInputSubsystems.h"
+
+
 
 // Sets default values
 ABird::ABird()
@@ -29,44 +33,39 @@ ABird::ABird()
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
-
 }
 
 // Called when the game starts or when spawned
 void ABird::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	
-}
-
-void ABird::MoveForward(float Value)
-{
-	if (Controller && (Value != 0.f))
+	//playerControllerCast
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
-		FVector ForwardDir = GetActorForwardVector();
-		AddMovementInput(ForwardDir, Value);
+		if (UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem< UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			SubSystem->AddMappingContext(BirdMappingContext, 0);
+		}
 	}
-}
-
-void ABird::Turn(float Value)
-{
 	
-	AddControllerYawInput(Value);
-
-	FRotator NewRotation = Controller->GetControlRotation();
-	NewRotation.Pitch = GetActorRotation().Pitch;  // Keep the pitch unchanged
-	SetActorRotation(NewRotation);
+	
+	
+	
 }
 
-void ABird::LookUp(float Value)
+void ABird::IAMove(const FInputActionValue& value)
 {
-	AddControllerPitchInput(Value);
-
-	FRotator NewRotation = Controller->GetControlRotation();
-	NewRotation.Yaw = GetActorRotation().Yaw;  // Keep the yaw unchanged
-	SetActorRotation(NewRotation);
+	//get input actions current value
+	 const float CurrentValue = value.Get<float>();
+	 if (Controller && CurrentValue != 0)
+	 {
+		 FVector MoveForward = GetActorForwardVector();
+		 AddMovementInput(MoveForward, CurrentValue);
+		 GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("InputAction IAMove Succeed"));
+	 }
 }
+
+
 
 // Called every frame
 void ABird::Tick(float DeltaTime)
@@ -80,9 +79,12 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABird::MoveForward);
+	/*PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABird::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ABird::Turn);
-	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ABird::LookUp);
-
+	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ABird::LookUp);*/
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::IAMove);
+	}
 }
 
