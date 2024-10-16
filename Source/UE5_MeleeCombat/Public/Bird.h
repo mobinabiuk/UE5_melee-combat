@@ -40,7 +40,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EnhancedInput")
 	UInputAction* MoveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EnhancedInput")
+	UInputAction* LookAction;
+
 	void IAMove(const FInputActionValue& Value);
+	void IALook(const FInputActionValue& Value);
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -56,5 +60,5 @@ private:
 	UCameraComponent* CameraComp;
 
 	UPROPERTY(VisibleAnywhere)
-	UFloatingPawnMovement* FloatingPawnMovement; // Movement Component
+	UFloatingPawnMovement* FloatingPawnMovement; 
 };

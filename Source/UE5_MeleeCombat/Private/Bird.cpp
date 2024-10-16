@@ -61,8 +61,19 @@ void ABird::IAMove(const FInputActionValue& value)
 	 {
 		 FVector MoveForward = GetActorForwardVector();
 		 AddMovementInput(MoveForward, CurrentValue);
-		 GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("InputAction IAMove Succeed"));
+		
 	 }
+}
+
+void ABird::IALook(const FInputActionValue& Value)
+{
+	const FVector2D CurrentValue = Value.Get<FVector2D>();
+	if (GetController())
+	{
+		AddControllerYawInput(CurrentValue.X);
+		AddControllerPitchInput(CurrentValue.Y);
+	}
+	
 }
 
 
@@ -85,6 +96,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::IAMove);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABird::IALook);
 	}
 }
 
