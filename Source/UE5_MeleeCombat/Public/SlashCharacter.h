@@ -4,7 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputActionValue.h"
 #include "SlashCharacter.generated.h"
+
+class USpringArmComponent;
+class UCameraComponent;
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class UE5_MELEECOMBAT_API ASlashCharacter : public ACharacter
@@ -23,6 +29,24 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* SpringArmComp;
+
+    UPROPERTY(VisibleAnywhere)
+	UCameraComponent* CameraComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EnhancedInput")
+	UInputMappingContext* CharMappingContext;
+
+	UPROPERTY(EditAnyWhere,BlueprintReadOnly,Category="EnhancedInput")
+	UInputAction* MoveAction;
+
+	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
+	UInputAction* LookAction;
+
 	
+	void IAMove(const FInputActionValue& Value);
+	void IALook(const FInputActionValue& Value);
 
 };
