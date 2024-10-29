@@ -25,6 +25,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Jump() override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,8 +46,11 @@ protected:
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
 	UInputAction* LookAction;
 
-	
+	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
+	UInputAction* JumpAction;
+
 	void IAMove(const FInputActionValue& Value);
 	void IALook(const FInputActionValue& Value);
+	
 
 };

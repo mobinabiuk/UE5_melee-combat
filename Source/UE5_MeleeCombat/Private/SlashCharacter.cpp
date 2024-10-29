@@ -60,6 +60,12 @@ void ASlashCharacter::IALook(const FInputActionValue& Value)
 	AddControllerYawInput(CurrentValue.X);
 }
 
+void ASlashCharacter::Jump()
+{
+	Super::Jump();
+}
+
+
 // Called every frame
 void ASlashCharacter::Tick(float DeltaTime)
 {
@@ -75,7 +81,9 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASlashCharacter::IAMove);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::IALook);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Jump);
 	}
 
 }
+
 

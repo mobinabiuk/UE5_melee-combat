@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class UE5_MELEECOMBAT_API AItem : public AActor
 {
@@ -16,18 +18,24 @@ public:
 	AItem();
 	virtual void Tick(float DeltaTime) override;
 
-	template<typename T>
-	T Minus(T First, T Second);
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+	UStaticMeshComponent* MeshComponent;
 
 protected:
 	
 	virtual void BeginPlay() override;
+
+
+	UPROPERTY(EditAnywhere)
+	USphereComponent* SphereMesh;
+
+	UFUNCTION()
+	void OnSphereBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	UFUNCTION()
+	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 
 };
 
-template<typename T>
-inline T AItem::Minus(T First, T Second)
-{
-	return (First - Second);
-}
+
