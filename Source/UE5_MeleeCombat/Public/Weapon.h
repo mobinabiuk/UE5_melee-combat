@@ -14,7 +14,23 @@ class UE5_MELEECOMBAT_API AWeapon : public AItem
 {
 	GENERATED_BODY()
 	
+public:
+	// Called every frame
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+
 protected: 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters", meta = (AllowPrivateAccess = "true"))
+	float Amplitude = 0.5f;  // Adjust the amplitude as needed
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters", meta = (AllowPrivateAccess = "true"))
+	float TimeConstant = 5.0f;  // Adjust the time constant as needed
+
+	float RunningTime = 0.0f;
+
+	float CalculateSinusoidalOffset();
+
 
 	virtual	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)override;
 
