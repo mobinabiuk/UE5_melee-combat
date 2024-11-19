@@ -12,8 +12,8 @@
 AItem::AItem()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	RootComponent = MeshComponent;
+	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	RootComponent = ItemMesh;
 
 	SphereMesh = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	SphereMesh->SetupAttachment(GetRootComponent());

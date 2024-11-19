@@ -3,6 +3,7 @@
 
 #include "Weapon.h"
 #include "Math/UnrealMathUtility.h"
+#include "SlashCharacter.h"
 
 void AWeapon::BeginPlay()
 {
@@ -17,20 +18,26 @@ void AWeapon::Tick(float DeltaTime)
     FVector NewLocation = GetActorLocation();
 
     // Calculate the sinusoidal offset for the Z-axis
-    NewLocation.Z += CalculateSinusoidalOffset();
+   /* NewLocation.Z += CalculateSinusoidalOffset();*/
 
     // Update the actor's location
     SetActorLocation(NewLocation);
 }
 
-float AWeapon::CalculateSinusoidalOffset()
-{
-    return Amplitude * FMath::Sin(RunningTime * TimeConstant);
-}
+//float AWeapon::CalculateSinusoidalOffset()
+//{
+//    return Amplitude * FMath::Sin(RunningTime * TimeConstant);
+//}
 
 void AWeapon::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     Super::OnSphereBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+   ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+   if (SlashCharacter)
+   {
+       FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
+       ItemMesh->AttachToComponent(SlashCharacter->GetMesh(), TransformRules, FName("RightHandSocket"));
+   }
 }
 
 void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
