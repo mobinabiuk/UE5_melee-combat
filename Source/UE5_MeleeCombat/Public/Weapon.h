@@ -18,6 +18,7 @@ public:
 	// Called every frame
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	void Equip(USceneComponent* InParent,FName InSocketName);
 
 protected: 
 

@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class AItem;
 
 UCLASS()
 class UE5_MELEECOMBAT_API ASlashCharacter : public ACharacter
@@ -26,6 +27,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
+    FORCEINLINE	void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,8 +51,17 @@ protected:
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
 	UInputAction* JumpAction;
 
+	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
+	UInputAction* Equip;
+
+	
+
 	void IAMove(const FInputActionValue& Value);
 	void IALook(const FInputActionValue& Value);
+	void EKeyPressed();
 	
+private:
+	UPROPERTY(VisibleInstanceOnly)
+	AItem* OverlappingItem;
 
 };

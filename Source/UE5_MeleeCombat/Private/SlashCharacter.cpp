@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include <EnhancedInputComponent.h>
 #include "EnhancedInputSubsystems.h"
+#include "Item.h"
+#include "Weapon.h"
 
 // Sets default values
 ASlashCharacter::ASlashCharacter()
@@ -60,6 +62,15 @@ void ASlashCharacter::IALook(const FInputActionValue& Value)
 	AddControllerYawInput(CurrentValue.X);
 }
 
+void ASlashCharacter::EKeyPressed()
+{
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+	}
+}
+
 void ASlashCharacter::Jump()
 {
 	Super::Jump();
@@ -82,6 +93,7 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASlashCharacter::IAMove);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::IALook);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Jump);
+		EnhancedInputComponent->BindAction(Equip, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
 	}
 
 }

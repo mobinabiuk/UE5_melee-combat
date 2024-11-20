@@ -6,6 +6,7 @@
 #include "UE5_MeleeCombat/DebugMacros.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "SlashCharacter.h"
 
 //#define Draw_Debug_Sphere(World,Location) DrawDebugSphere(World,Location,70.f,24,FColor::Red,false,3.f);
 
@@ -43,14 +44,21 @@ void AItem::BeginPlay()
 
 void AItem::OnSphereBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	const FString OtherActorName = OtherActor->GetName();
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Green, OtherActorName);
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
+	{
+		SlashCharacter->SetOverlappingItem(this);
+	}
+
 }
 
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	const FString OtherActerName = OtherActor->GetName();
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, OtherActerName);
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
+	{
+		SlashCharacter->SetOverlappingItem(nullptr);
+	}
 
 }
 
