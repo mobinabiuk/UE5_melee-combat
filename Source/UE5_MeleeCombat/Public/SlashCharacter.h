@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "CharacterTypes.h"
 #include "SlashCharacter.generated.h"
 
 class USpringArmComponent;
@@ -12,6 +13,8 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class AItem;
+
+
 
 UCLASS()
 class UE5_MELEECOMBAT_API ASlashCharacter : public ACharacter
@@ -28,6 +31,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
     FORCEINLINE	void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -61,6 +65,8 @@ protected:
 	void EKeyPressed();
 	
 private:
+	ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
+
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
