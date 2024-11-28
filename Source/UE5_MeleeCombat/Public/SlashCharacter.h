@@ -13,6 +13,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class AItem;
+class UAnimMontage;
 
 
 
@@ -56,18 +57,26 @@ protected:
 	UInputAction* JumpAction;
 
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
-	UInputAction* Equip;
+	UInputAction* EquipAction;
 
-	
+	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
+	UInputAction* AttackAction;
 
 	void IAMove(const FInputActionValue& Value);
 	void IALook(const FInputActionValue& Value);
 	void EKeyPressed();
+  	void Attack();
 	
 private:
 	ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
 
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
+
+	/*
+	* Anim Montages
+	*/
+	UPROPERTY(EditDefaultsOnly,Category ="Montages")
+	UAnimMontage* AttackMontage;
 
 };
