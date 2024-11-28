@@ -62,13 +62,21 @@ protected:
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
 	UInputAction* AttackAction;
 
+	/*
+	* Callbacks for input
+	*/
 	void IAMove(const FInputActionValue& Value);
 	void IALook(const FInputActionValue& Value);
 	void EKeyPressed();
   	void Attack();
 	
+	/*
+	* play montage functions
+	*/
+	void PlayAttackMontage();
 private:
 	ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
