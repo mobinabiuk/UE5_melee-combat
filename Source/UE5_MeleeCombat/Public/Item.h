@@ -8,6 +8,12 @@
 
 class USphereComponent;
 
+enum class EItemState :uint8
+{
+	EIS_Hovering,
+	EIS_Equipped
+};
+
 UCLASS()
 class UE5_MELEECOMBAT_API AItem : public AActor
 {
@@ -21,14 +27,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 	UStaticMeshComponent* ItemMesh;
 
+
 protected:
 	
 	virtual void BeginPlay() override;
 
 	
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
 	float Amplitude = 0.25f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
+	float RunningTime=2.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
 	float TimeConstant = 5.f;
@@ -36,10 +46,12 @@ protected:
 	UFUNCTION(BlueprintPure)
 	float TransformedSin();
 
-	UFUNCTION(BlueprintPure)
-	float TransformedCos();
 
-	template<typename T>
+
+	/*UFUNCTION(BlueprintPure)
+	float TransformedCos();*/
+
+	/*template<typename T>
 	T Avg(T First, T Second);*/
 
 
@@ -52,7 +64,7 @@ protected:
 	UFUNCTION()
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
-	
+	EItemState ItemState= EItemState::EIS_Hovering;
 
 };
 

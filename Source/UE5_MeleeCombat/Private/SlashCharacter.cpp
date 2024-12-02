@@ -44,6 +44,8 @@ void ASlashCharacter::BeginPlay()
 
 void ASlashCharacter::IAMove(const FInputActionValue& Value)
 {
+	if (ActionState == EActionState::EAS_Attacking) return;
+	
 	const FVector2D CurrentValue = Value.Get<FVector2D>();
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);

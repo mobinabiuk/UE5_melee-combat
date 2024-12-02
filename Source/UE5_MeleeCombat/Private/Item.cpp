@@ -8,6 +8,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "SlashCharacter.h"
 
+
 //#define Draw_Debug_Sphere(World,Location) DrawDebugSphere(World,Location,70.f,24,FColor::Red,false,3.f);
 
 AItem::AItem()
@@ -30,11 +31,13 @@ void AItem::BeginPlay()
 	
 }
 
-//float AIItem::TransformedSin()
-//{
-//	return Amplitude * FMath::Sin(RunningTime * TimeConstant);
-//}
-//
+float AItem::TransformedSin()
+{
+	return Amplitude * FMath::Sin(RunningTime * TimeConstant);
+}
+
+
+
 //float AIItem::TransformedCos()
 //{
 //	return Amplitude * FMath::Cos(RunningTime * TimeConstant);
@@ -67,6 +70,12 @@ void AItem::Tick(float DeltaTime)
 {
 
 	Super::Tick(DeltaTime);
-	/*RunningTime += DeltaTime;*/
+	RunningTime += DeltaTime;
+
+	if (ItemState == EItemState::EIS_Hovering)
+	{
+		AddActorWorldOffset(FVector(0.0F, 0.0F, TransformedSin()));
+	}
+	
 }
 
