@@ -14,6 +14,7 @@ class UInputMappingContext;
 class UInputAction;
 class AItem;
 class UAnimMontage;
+class AWeapon;
 
 
 
@@ -74,8 +75,24 @@ protected:
 	* play montage functions
 	*/
 	void PlayAttackMontage();
+
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
+	bool CanAttack();
+
+	UFUNCTION()
+	void PlayEquipMontage(FName SectionName);
+	bool CanDisarm();
+	bool CanArm();
+
+	UFUNCTION(BlueprintCallable)
+	void Disarm();
+
+	UFUNCTION(BlueprintCallable)
+	void Arm();
+
+	UFUNCTION(BlueprintCallable)
+	void FinishEquipping();
 private:
 	ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
 
@@ -85,10 +102,15 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
+	UPROPERTY(VisibleAnyWhere,Category= Weapon)
+	AWeapon* EquippedWeapon;
 	/*
 	* Anim Montages
 	*/
 	UPROPERTY(EditDefaultsOnly,Category ="Montages")
 	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* EquipMontage;
 
 };

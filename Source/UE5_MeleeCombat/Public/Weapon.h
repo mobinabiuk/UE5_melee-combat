@@ -20,6 +20,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void Equip(USceneComponent* InParent,FName InSocketName);
 
+	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
+
 protected: 
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters", meta = (AllowPrivateAccess = "true"))
