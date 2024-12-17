@@ -4,6 +4,14 @@
 #include "Weapon.h"
 #include "Math/UnrealMathUtility.h"
 #include "SlashCharacter.h"
+#include "Components/BoxComponent.h"
+
+
+AWeapon::AWeapon()
+{
+    WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Box"));
+    WeaponBox->SetupAttachment(GetRootComponent());
+}
 
 void AWeapon::BeginPlay()
 {

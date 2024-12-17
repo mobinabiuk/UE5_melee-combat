@@ -175,7 +175,7 @@ void ASlashCharacter::EKeyPressed()
 		EquippedWeapon = OverlappingWeapon;
 		UE_LOG(LogTemp, Warning, TEXT("Equipped weapon, character state: %d"), (int32)CharacterState);
 	}
-	/*else
+	else
 	{
 		if (CanDisarm())
 		{
@@ -189,7 +189,7 @@ void ASlashCharacter::EKeyPressed()
 			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 			ActionState = EActionState::EAS_EquippingWeapon;
 		}
-	}*/
+	}
 
 	
 	
