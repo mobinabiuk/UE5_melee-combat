@@ -9,6 +9,7 @@
 #include "Item.h"
 #include "Weapon.h"
 #include "Animation/AnimMontage.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ASlashCharacter::ASlashCharacter()
@@ -198,6 +199,14 @@ void ASlashCharacter::EKeyPressed()
 void ASlashCharacter::Jump()
 {
 	Super::Jump();
+}
+
+void ASlashCharacter::SetWeaponCollision(ECollisionEnabled::Type CollisionEnabled)
+{
+	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
+	{
+		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+	}
 }
 
 
