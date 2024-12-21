@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "UE5_MeleeCombat/DebugMacros.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -55,8 +56,16 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 	Draw_Debug_Sphere(ImpactPoint);
-	PlayHitReactMontage(FName("FromLeft"));
 
+	DirectionalHitReact(ImpactPoint);
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HitSound, ImpactPoint);
+	}
+}
+
+void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
+{
 	//dot product
 	const FVector Forward = GetActorForwardVector();
 	//lower impact point to the enemys actor location z
@@ -69,6 +78,31 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	double Theta = FMath::Acos(CosTheta);
 	//convert from radiance to degrees
 	Theta = FMath::RadiansToDegrees(Theta);
+
+	//if cross product points down theta should be negative
+	const FVector CrossProduct = FVector::CrossProduct(Forward, ToHit);
+	if (CrossProduct.Z<0)
+	{
+		Theta *= -1.f;
+	}
+	//play suitable react montage
+	FName Section("FromBack");
+	if (Theta >= -45.f && Theta<45.f)
+	{
+		Section = FName("FromFront");
+	}
+	else if (Theta >= -135.f && Theta < -45.f)
+	{
+		Section = FName("FromLeft");
+	}
+	else if (Theta >= 45.f && Theta<135.f)
+	{
+		Section = FName("FromRight");
+	}
+
+	PlayHitReactMontage(Section);
+
+
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::Printf(TEXT("Theta:%f"), Theta));
