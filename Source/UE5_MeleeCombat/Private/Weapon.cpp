@@ -6,6 +6,7 @@
 #include "SlashCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "HitInterface.h"
 
 
 AWeapon::AWeapon()
@@ -90,6 +91,15 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
         EDrawDebugTrace::ForDuration,
         BoxHit,
         true);
+    //for drawing sphere debug macro implemented in enemy
+    if (BoxHit.GetActor())
+    {
+        IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
+        if (HitInterface)
+        {
+            HitInterface->GetHit(BoxHit.ImpactPoint);
+        }
+    }
 
 }
 
