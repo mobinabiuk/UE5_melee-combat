@@ -55,12 +55,21 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
-	Draw_Debug_Sphere(ImpactPoint);
+	//Draw_Debug_Sphere(ImpactPoint);
 
 	DirectionalHitReact(ImpactPoint);
 	if (HitSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, HitSound, ImpactPoint);
+
+	}
+	if (HitParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitParticles,
+			ImpactPoint
+		);
 	}
 }
 
@@ -102,10 +111,5 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 
 	PlayHitReactMontage(Section);
 
-
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::Printf(TEXT("Theta:%f"), Theta));
-	}
 }
 
