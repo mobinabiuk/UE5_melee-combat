@@ -51,6 +51,7 @@ void AItem::OnSphereBeginOverlap( UPrimitiveComponent* OverlappedComponent, AAct
 	if (SlashCharacter)
 	{
 		SlashCharacter->SetOverlappingItem(this);
+		
 	}
 
 }
