@@ -2,36 +2,40 @@
 
 
 #include "BreakableActor.h"
+#include "Treasure.h"
+#include "Components/CapsuleComponent.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
 
 
-// Sets default values
 ABreakableActor::ABreakableActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	GeometryCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("GeometryCollection"));
+	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollision"));
+	Capsule->SetupAttachment(GetRootComponent());
 	SetRootComponent(GeometryCollection);
 	GeometryCollection->SetGenerateOverlapEvents(true);
-
+	Capsule->SetCollisionResponseToAllChannels(ECR_Ignore);
+	Capsule->SetCollisionResponseToChannel(ECC_Pawn,ECR_Block);
 }
 
-// Called when the game starts or when spawned
 void ABreakableActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-// Called every frame
 void ABreakableActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
 {
-
+	UWorld* World = GetWorld();
+	if (IsValid(World) && IsValid(TreasureClass))
+	{
+		FVector Location = GetActorLocation();
+		Location.Z += 75.f;
+		World->SpawnActor<ATreasure>(TreasureClass,Location,GetActorRotation());
+	}
 }
-

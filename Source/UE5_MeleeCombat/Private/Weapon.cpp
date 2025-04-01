@@ -32,16 +32,8 @@ void AWeapon::BeginPlay()
 
 void AWeapon::Tick(float DeltaTime)
 {
-    RunningTime += DeltaTime;
-
-    // Get the current location of the static mesh
-    FVector NewLocation = GetActorLocation();
-
-    // Calculate the sinusoidal offset for the Z-axis
-   /* NewLocation.Z += CalculateSinusoidalOffset();*/
-
-    // Update the actor's location
-    SetActorLocation(NewLocation);
+    Super::Tick(DeltaTime);
+  
 }
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)

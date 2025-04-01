@@ -25,8 +25,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	/* capsul collision*/
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	class UCapsuleComponent* Capsule;
+
 private:
 	UPROPERTY(VisibleAnywhere);
 	UGeometryCollectionComponent* GeometryCollection;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ATreasure> TreasureClass;
 };
