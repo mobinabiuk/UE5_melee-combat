@@ -19,4 +19,8 @@ protected:
 	/* Sounds */
 	UPROPERTY(EditAnywhere,Category="Sounds")	
 	USoundBase* PickupSound;
+
+	/*Gold Count*/
+	UPROPERTY(EditAnywhere,Category = "Treasure Properties")
+	int32 Gold;
 };
