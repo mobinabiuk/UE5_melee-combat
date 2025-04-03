@@ -32,8 +32,6 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-	
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
 	float Amplitude = 0.25f;
 
@@ -45,26 +43,21 @@ protected:
 
 	UFUNCTION(BlueprintPure)
 	float TransformedSin();
-
-
-
-	/*UFUNCTION(BlueprintPure)
-	float TransformedCos();*/
-
-	/*template<typename T>
-	T Avg(T First, T Second);*/
-
-
-	UPROPERTY(EditAnywhere)
-	USphereComponent* SphereMesh;
+	
+	UPROPERTY(VisibleAnywhere,Category = "Collision")
+	USphereComponent* SphereCollision;
 
 	UFUNCTION()
-    virtual	void OnSphereBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+    virtual	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	UFUNCTION()
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 	EItemState ItemState= EItemState::EIS_Hovering;
+
+	/*Niagara*/
+	UPROPERTY(EditAnywhere, Category = "Niagara")
+	class UNiagaraComponent* EmbersEffect;
 
 };
 

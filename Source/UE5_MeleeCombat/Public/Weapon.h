@@ -22,7 +22,7 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	void Equip(USceneComponent* InParent,FName InSocketName);
-
+	
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
 	TArray<AActor*> IgnoreActors;
 
@@ -62,3 +62,5 @@ private:
 public:
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
 };
+
+
