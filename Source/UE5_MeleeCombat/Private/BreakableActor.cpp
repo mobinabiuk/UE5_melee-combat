@@ -29,7 +29,7 @@ void ABreakableActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
+	void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	UWorld* World = GetWorld();
 	if (IsValid(World) && TreasureClasses.Num() > 0)
