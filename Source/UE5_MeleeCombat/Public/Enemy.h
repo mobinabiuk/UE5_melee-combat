@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "HitInterface.h"
+#include "CharacterTypes.h"
 #include "Enemy.generated.h"
+
 
 class UAnimMontage;
 class USoundBase;
@@ -32,6 +34,10 @@ protected:
 	* play montage functions
 	*/
 	void PlayHitReactMontage(const FName& SectionName);
+	void Die();
+	
+	UPROPERTY(BlueprintReadOnly)
+	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 
 private:
 
@@ -52,6 +58,15 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = VisualEffects)
 	UParticleSystem* HitParticles;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* DeathMontage;
+
+	UPROPERTY()
+	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere)
+	double CombatRadius = 500.f;
 
 };
 
