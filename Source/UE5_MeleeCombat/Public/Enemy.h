@@ -38,7 +38,7 @@ private:
 	class UAttributeComponent* Attributes;
 
 	UPROPERTY(EditAnywhere)
-	class UWidgetComponent* HealthBarWidget;
+	class UHealthBarComponent* HealthBarWidget;
 
 	/*
 	* Anim Montages

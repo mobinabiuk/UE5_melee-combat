@@ -3,7 +3,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/AttributeComponent.h"
-#include "Components/WidgetComponent.h"
+#include "HUD/HealthBarComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -20,13 +20,17 @@ AEnemy::AEnemy()
 
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(FName("Attributes"));
 
-	HealthBarWidget=CreateDefaultSubobject<UWidgetComponent>(FName("HealthBar"));
+	HealthBarWidget=CreateDefaultSubobject<UHealthBarComponent>(FName("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 }
 
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	if (IsValid(HealthBarWidget))
+	{
+		HealthBarWidget->SetHealthPercent(.5f);
+	}
 	
 }
 
