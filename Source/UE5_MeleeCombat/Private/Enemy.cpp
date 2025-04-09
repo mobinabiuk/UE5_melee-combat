@@ -5,6 +5,7 @@
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 AEnemy::AEnemy()
@@ -22,6 +23,7 @@ AEnemy::AEnemy()
 
 	HealthBarWidget=CreateDefaultSubobject<UHealthBarComponent>(FName("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+
 }
 
 void AEnemy::BeginPlay()
@@ -79,7 +81,7 @@ void AEnemy::Die()
 		}
 
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		SetLifeSpan(3.f);
+		SetLifeSpan(5.f);
 	}
 }
 
