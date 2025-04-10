@@ -6,6 +6,9 @@
 #include "HUD/HealthBarComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Navigation/PathFollowingComponent.h"
+#include "Runtime/AIModule/Classes/AIController.h"
+#include "TimerManager.h"
 
 
 AEnemy::AEnemy()
@@ -23,6 +26,11 @@ AEnemy::AEnemy()
 
 	HealthBarWidget=CreateDefaultSubobject<UHealthBarComponent>(FName("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+	GetCharacterMovement()->bOrientRotationToMovement=true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+	
 
 }
 
@@ -33,6 +41,15 @@ void AEnemy::BeginPlay()
 	{
 		HealthBarWidget->SetVisibility(false);
 	}
+
+	GetWorldTimerManager().SetTimer(
+		TimerHandle, // Timer handle, can also store in a member variable if needed
+		this,           // Object to call the function on
+		&AEnemy::OnTimerFinished, // Function to call
+		2.0f,           // Delay in seconds
+		false           // Do not loop
+	);
+	
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)
@@ -82,6 +99,31 @@ void AEnemy::Die()
 
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		SetLifeSpan(5.f);
+	}
+}
+
+void AEnemy::OnTimerFinished()
+{
+	EnemyAIController = Cast<AAIController>(GetController());
+	if (IsValid(EnemyAIController) && IsValid(PatrolTarget))
+	{
+		FAIMoveRequest MoveRequest;
+		MoveRequest.SetGoalActor(PatrolTarget);
+		FVector PatrolLocation = PatrolTarget->GetActorLocation();
+		UE_LOG(LogTemp, Warning, TEXT("Target Point Location Set to: %s"), *PatrolLocation.ToString());
+		MoveRequest.SetAcceptanceRadius(15.f);
+		FNavPathSharedPtr NavPath;
+		EnemyAIController->MoveTo(MoveRequest, &NavPath);
+		if (NavPath.IsValid())
+		{
+			TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
+			for (auto& Point : PathPoints)
+			{
+				const FVector& Location = Point.Location;
+				DrawDebugSphere(GetWorld(),Location,12.f,12,FColor::Green,false,10.f);
+			
+			}
+		}
 	}
 }
 

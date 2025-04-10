@@ -35,6 +35,9 @@ protected:
 	*/
 	void PlayHitReactMontage(const FName& SectionName);
 	void Die();
+
+	UFUNCTION()
+	void OnTimerFinished();
 	
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
@@ -68,5 +71,17 @@ private:
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;
 
+	/* Navigation */
+	UPROPERTY()
+	class AAIController* EnemyAIController;
+	//Current Patrol Target
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	AActor* PatrolTarget;
+
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	TArray<AActor*> PatrolTargets;
+	
+	UPROPERTY()
+	FTimerHandle TimerHandle;
 };
 
