@@ -37,9 +37,15 @@ protected:
 	void Die();
 
 	UFUNCTION()
-	void OnTimerFinished();
+	void MoveToTarget(AActor* Target);
+	AActor* ChoosePatrolTarget();
+	void PatrolTimerFinished();
 	bool InTargetRange(AActor* Target,double Radius);
-	
+	void CheckCombatTarget();
+	void CheckPatrolTarget();
+	UFUNCTION()
+	void PawnSeen(APawn* SeePawn);
+
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 
@@ -72,6 +78,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;
 
+	UPROPERTY(EditAnywhere)
+	double AttackRadius = 150.f;
+
 	/* Navigation */
 	UPROPERTY()
 	class AAIController* EnemyAIController;
@@ -87,5 +96,20 @@ private:
 	
 	UPROPERTY()
 	FTimerHandle TimerHandle;
+
+	UPROPERTY(EditAnywhere,Category="AI Navigation")
+	float WaitMin = 4.f;
+	
+	UPROPERTY(EditAnywhere,Category="AI Navigation")
+	float WaitMax = 10.f;
+
+	/* Components*/
+	UPROPERTY(VisibleAnywhere,Category="AI Navigation")
+	class UPawnSensingComponent* PawnSensingComponent;
+
+	EEnemyState EnemyState =EEnemyState::EES_Patrolling;
 };
+
+
+
 

@@ -39,7 +39,7 @@ void ASlashCharacter::BeginPlay()
 			SubSystem->AddMappingContext(CharMappingContext, 0);
 		}
 	}
-	
+	Tags.Add(FName("SlashCharacter"));
 	
 }
 
