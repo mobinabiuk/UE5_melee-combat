@@ -9,6 +9,7 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "TimerManager.h"
+#include "UE5_MeleeCombat/DebugMacros.h"
 
 
 AEnemy::AEnemy()
@@ -127,19 +128,52 @@ void AEnemy::OnTimerFinished()
 	}
 }
 
+bool AEnemy::InTargetRange(AActor* Target,double Radius)
+{
+	const double DistanceToTarget = (Target->GetActorLocation()-GetActorLocation()).Size();
+	return DistanceToTarget <= Radius;
+}
+
 
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (IsValid(CombatTarget))
 	{
-	    const double DistanceToTarget = (CombatTarget->GetActorLocation()-GetActorLocation()).Size();
-		if (DistanceToTarget>CombatRadius)
+		if (!InTargetRange(CombatTarget,CombatRadius))
 		{
 			CombatTarget = nullptr;
 			if (IsValid(HealthBarWidget))
 			{
 				HealthBarWidget->SetVisibility(false);
+			}
+		}
+	}
+	if (IsValid(PatrolTarget)&&IsValid(EnemyAIController))
+	{
+		if (InTargetRange(PatrolTarget,PatrolRadius))
+		{
+			TArray<AActor*> ValidTargets;
+			for (AActor* Target : PatrolTargets)
+			{
+				if (Target !=PatrolTarget)
+				{
+					ValidTargets.AddUnique(Target);
+				}
+			}
+			const int32 NumPatrolTargets = ValidTargets.Num();
+			if (NumPatrolTargets > 0)
+			{
+				const int32 TargetSelection = FMath::RandRange(0, NumPatrolTargets - 1);
+				AActor* Target =ValidTargets[TargetSelection];
+				PatrolTarget = Target;
+				
+				FAIMoveRequest MoveRequest;
+				MoveRequest.SetGoalActor(PatrolTarget);
+				FVector PatrolLocation = PatrolTarget->GetActorLocation();
+				UE_LOG(LogTemp, Warning, TEXT("Target Point Location Set to: %s"), *PatrolLocation.ToString());
+				MoveRequest.SetAcceptanceRadius(15.f);
+				EnemyAIController->MoveTo(MoveRequest);
 			}
 		}
 	}
