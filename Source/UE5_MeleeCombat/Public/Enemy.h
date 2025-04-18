@@ -41,11 +41,15 @@ protected:
 	bool InTargetRange(AActor* Target,double Radius);
 	void CheckCombatTarget();
 	void CheckPatrolTarget();
+	virtual void Destroyed() override;
 	UFUNCTION()
 	void PawnSeen(APawn* SeePawn);
 
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AWeapon> WeaponClass;
 
 private:
 

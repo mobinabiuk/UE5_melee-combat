@@ -11,6 +11,8 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "TimerManager.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Weapon.h"
+#include "Navigation/PathFollowingComponent.h"
 
 
 AEnemy::AEnemy()
@@ -52,6 +54,19 @@ void AEnemy::BeginPlay()
 	if (IsValid(PawnSensingComponent))
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this,&AEnemy::PawnSeen);
+	}
+
+	UWorld* World = GetWorld();
+	if (IsValid(WeaponClass)&&IsValid(World))
+	{
+	   AWeapon* DefaultWeapon =World->SpawnActor<AWeapon>(WeaponClass);
+		DefaultWeapon->Equip(GetMesh(),FName("RightHandSocket"),this,this);
+		EquippedWeapon = DefaultWeapon;
+	   if (IsValid(DefaultWeapon))
+	   {
+	   	FVector NewScale = FVector(1.f, 1.f, 1.f); // Scale all axes to 1.5
+	   	DefaultWeapon->SetActorScale3D(NewScale);
+	   }
 	}
 }
 
@@ -154,6 +169,14 @@ void AEnemy::CheckPatrolTarget()
 		PatrolTarget = ChoosePatrolTarget();
 		const float WaitTime = FMath::RandRange(WaitMin,WaitMax);
 		GetWorldTimerManager().SetTimer(TimerHandle,this,&AEnemy::PatrolTimerFinished,WaitTime);
+	}
+}
+
+void AEnemy::Destroyed()
+{
+	if (IsValid(EquippedWeapon))
+	{
+		EquippedWeapon->Destroy();
 	}
 }
 
