@@ -3,18 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "HitInterface.h"
+#include "BaseCharacter.h"
 #include "CharacterTypes.h"
 #include "Enemy.generated.h"
 
 
-class UAnimMontage;
 class USoundBase;
 
 
 UCLASS()
-class UE5_MELEECOMBAT_API AEnemy : public ACharacter,public IHitInterface
+class UE5_MELEECOMBAT_API AEnemy : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -25,7 +23,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint)override;
-	void DirectionalHitReact(const FVector& ImpactPoint);
+	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 protected:
 	virtual void BeginPlay() override;
@@ -33,8 +31,8 @@ protected:
 	/*
 	* play montage functions
 	*/
-	void PlayHitReactMontage(const FName& SectionName);
-	void Die();
+	
+	virtual void Die() override;
 
 	UFUNCTION()
 	void MoveToTarget(AActor* Target);
@@ -51,8 +49,7 @@ protected:
 
 private:
 
-	UPROPERTY(VisibleAnywhere)
-	class UAttributeComponent* Attributes;
+	
 
 	UPROPERTY(EditAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
@@ -60,17 +57,7 @@ private:
 	/*
 	* Anim Montages
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* HitReactMontage;
-
-	UPROPERTY(EditAnywhere,Category=Sounds)
-	USoundBase* HitSound;
-
-	UPROPERTY(EditAnywhere, Category = VisualEffects)
-	UParticleSystem* HitParticles;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* DeathMontage;
+	
 
 	UPROPERTY()
 	AActor* CombatTarget;

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "InputActionValue.h"
 #include "CharacterTypes.h"
 #include "SlashCharacter.generated.h"
@@ -14,12 +14,11 @@ class UInputMappingContext;
 class UInputAction;
 class AItem;
 class UAnimMontage;
-class AWeapon;
 
 
 
 UCLASS()
-class UE5_MELEECOMBAT_API ASlashCharacter : public ACharacter
+class UE5_MELEECOMBAT_API ASlashCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -35,8 +34,7 @@ public:
     FORCEINLINE	void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
-	UFUNCTION(BlueprintCallable)
-	void SetWeaponCollision(ECollisionEnabled::Type CollisionEnabled);
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -72,16 +70,15 @@ protected:
 	void IAMove(const FInputActionValue& Value);
 	void IALook(const FInputActionValue& Value);
 	void EKeyPressed();
-  	void Attack();
+  	virtual void Attack() override;
 	
 	/*
 	* play montage functions
 	*/
-	void PlayAttackMontage();
-
-	UFUNCTION(BlueprintCallable)
-	void AttackEnd();
-	bool CanAttack();
+	virtual void PlayAttackMontage() override;
+	
+	virtual void AttackEnd() override;
+	virtual bool CanAttack() override;
 
 	UFUNCTION()
 	void PlayEquipMontage(FName SectionName);
@@ -105,13 +102,8 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	UPROPERTY(VisibleAnyWhere,Category= Weapon)
-	AWeapon* EquippedWeapon;
-	/*
-	* Anim Montages
-	*/
-	UPROPERTY(EditDefaultsOnly,Category ="Montages")
-	UAnimMontage* AttackMontage;
+	
+	
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EquipMontage;
