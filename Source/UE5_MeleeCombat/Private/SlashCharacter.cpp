@@ -70,6 +70,7 @@ void ASlashCharacter::IALook(const FInputActionValue& Value)
 
 void ASlashCharacter::Attack()
 {
+	Super::Attack();
 	if (ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_UnEquipped)
 	{
 		PlayAttackMontage();
@@ -82,6 +83,7 @@ void ASlashCharacter::Attack()
 
 void ASlashCharacter::PlayAttackMontage()
 {
+	Super::PlayAttackMontage();
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && AttackMontage)
 	{

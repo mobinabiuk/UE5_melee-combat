@@ -111,6 +111,74 @@ void AEnemy::Die()
 	}
 }
 
+void AEnemy::Attack()
+{
+	Super::Attack();
+	PlayAttackMontage();
+}
+
+void AEnemy::HideHealthBar()
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(false);
+	}
+}
+
+void AEnemy::ShowHealthBar()
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(true);
+	}
+}
+
+void AEnemy::LoseInterest()
+{
+	CombatTarget = nullptr;
+	HideHealthBar();
+}
+
+void AEnemy::StartPatrolling()
+{
+	EnemyState = EEnemyState::EES_Patrolling;
+	GetCharacterMovement()->MaxWalkSpeed = 150.f;
+	MoveToTarget(PatrolTarget);
+}
+
+void AEnemy::ChaseTarget()
+{
+	EnemyState = EEnemyState::EES_Chasing;
+	GetCharacterMovement()->MaxWalkSpeed = ChasingSpeed;
+	MoveToTarget(CombatTarget);
+}
+
+bool AEnemy::IsOutsideCombatRadius()
+{
+	return !InTargetRange(CombatTarget, CombatRadius);
+}
+
+bool AEnemy::IsOutsideAttackRadius()
+{
+	return !InTargetRange(CombatTarget, AttackRadius);
+}
+
+bool AEnemy::IsInsideAttackRadius()
+{
+	return InTargetRange(CombatTarget, AttackRadius);
+}
+
+bool AEnemy::IsChasing()
+{
+	return EnemyState == EEnemyState::EES_Chasing;
+}
+
+bool AEnemy::IsAttacking()
+{
+	return EnemyState == EEnemyState::EES_Attacking;
+}
+
+
 void AEnemy::PlayAttackMontage()
 {
 	Super::PlayAttackMontage();
@@ -169,30 +237,22 @@ bool AEnemy::InTargetRange(AActor* Target,double Radius)
 
 void AEnemy::CheckCombatTarget()
 {
-	if (!InTargetRange(CombatTarget,CombatRadius))
+	if (IsOutsideCombatRadius())
 	{
 		//outside combat radius lose interest
-		CombatTarget = nullptr;
-		if (IsValid(HealthBarWidget))
-		{
-			HealthBarWidget->SetVisibility(false);
-		}
-		EnemyState = EEnemyState::EES_Patrolling;
-		GetCharacterMovement()->MaxWalkSpeed = 150.f;
-		MoveToTarget(PatrolTarget);
+		LoseInterest();
+		StartPatrolling();
 	}
-	else if (!InTargetRange(CombatTarget,AttackRadius)&& EnemyState != EEnemyState::EES_Chasing)
+	else if (IsOutsideAttackRadius() && !IsChasing())
 	{
 		//outside attack range
-		EnemyState = EEnemyState::EES_Chasing;
-		GetCharacterMovement()->MaxWalkSpeed = 300.f;
-		MoveToTarget(CombatTarget);
+		ChaseTarget();
 	}
-	else if (InTargetRange(CombatTarget,AttackRadius)&& EnemyState != EEnemyState::EES_Attacking)
+	else if (IsInsideAttackRadius() && !IsAttacking())
 	{
 		//inside attack range
 		EnemyState = EEnemyState::EES_Attacking;
-		//Todo:attackmontage
+		Attack();
 	}
 }
 

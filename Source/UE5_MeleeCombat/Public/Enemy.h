@@ -47,15 +47,18 @@ protected:
 	void PawnSeen(APawn* SeePawn);
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose = EDeathPose::EDP_Alive;
+	EDeathPose DeathPose;
+	
+	UPROPERTY(BlueprintReadOnly)
+	EEnemyState EnemyState =EEnemyState::EES_Patrolling;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeapon> WeaponClass;
 
+	virtual void Attack() override;
+
 private:
-
 	
-
 	UPROPERTY(EditAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
 
@@ -68,7 +71,7 @@ private:
 	AActor* CombatTarget;
 
 	UPROPERTY(EditAnywhere)
-	double CombatRadius = 500.f;
+	double CombatRadius = 600.f;
 
 	UPROPERTY(EditAnywhere)
 	double AttackRadius = 150.f;
@@ -84,7 +87,13 @@ private:
 	TArray<AActor*> PatrolTargets;
 
 	UPROPERTY(EditAnywhere)
-	double PatrolRadius = 200.f;
+	double PatrolRadius = 180.f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float PatrollingSpeed = 125.f;
+	
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float ChasingSpeed = 300.f;
 	
 	UPROPERTY()
 	FTimerHandle TimerHandle;
@@ -99,8 +108,31 @@ private:
 	UPROPERTY(VisibleAnywhere,Category="AI Navigation")
 	class UPawnSensingComponent* PawnSensingComponent;
 
-	EEnemyState EnemyState =EEnemyState::EES_Patrolling;
+	/** AI Behavior */
+
+	void HideHealthBar();
+	void ShowHealthBar();
+	void LoseInterest();
+	void StartPatrolling();
+	void ChaseTarget();
+	bool IsOutsideCombatRadius();
+	bool IsOutsideAttackRadius();
+	bool IsInsideAttackRadius();
+	bool IsChasing();
+	bool IsAttacking();
+
+	/*Combat*/
+	FTimerHandle AttackTimer;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float AttackMin = 0.5f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float AttackMax = 1.f;
+	
 };
+
+
 
 
 
