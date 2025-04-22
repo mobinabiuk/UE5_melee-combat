@@ -19,9 +19,6 @@ class UE5_MELEECOMBAT_API AEnemy : public ABaseCharacter
 public:
 	AEnemy();
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint)override;
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
@@ -34,6 +31,7 @@ protected:
 	
 	virtual void Die() override;
 	virtual void PlayAttackMontage() override;
+	virtual void HandleDamage(float DamageAmount) override;
 
 	UFUNCTION()
 	void MoveToTarget(AActor* Target);
@@ -44,7 +42,7 @@ protected:
 	void CheckPatrolTarget();
 	virtual void Destroyed() override;
 	UFUNCTION()
-	void PawnSeen(APawn* SeePawn);
+	void PawnSeen(APawn* SeenPawn);
 
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose;
@@ -56,6 +54,7 @@ protected:
 	TSubclassOf<class AWeapon> WeaponClass;
 
 	virtual void Attack() override;
+	virtual bool CanAttack() override;
 
 private:
 	
@@ -96,7 +95,7 @@ private:
 	float ChasingSpeed = 300.f;
 	
 	UPROPERTY()
-	FTimerHandle TimerHandle;
+	FTimerHandle PatrolTimer;
 
 	UPROPERTY(EditAnywhere,Category="AI Navigation")
 	float WaitMin = 4.f;
@@ -120,8 +119,15 @@ private:
 	bool IsInsideAttackRadius();
 	bool IsChasing();
 	bool IsAttacking();
+	bool IsDead();
+	bool IsEngaged();
+	void ClearPatrolTimer();
+	void StartAttackTimer();
+	void ClearAttackTimer();
+	
 
 	/*Combat*/
+	
 	FTimerHandle AttackTimer;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
