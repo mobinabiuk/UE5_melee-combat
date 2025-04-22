@@ -30,7 +30,6 @@ protected:
 	*/
 	
 	virtual void Die() override;
-	virtual void PlayAttackMontage() override;
 	virtual void HandleDamage(float DamageAmount) override;
 
 	UFUNCTION()

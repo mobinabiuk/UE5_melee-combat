@@ -215,40 +215,6 @@ void AEnemy::StartAttackTimer()
 }
 
 
-void AEnemy::PlayAttackMontage()
-{
-	Super::PlayAttackMontage();
-
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && AttackMontage)
-	{
-		if (!AnimInstance->Montage_IsPlaying(AttackMontage))
-		{
-			AnimInstance->Montage_Play(AttackMontage);
-			int32 Selection = FMath::RandRange(0, 2);
-			FName SectionName = FName();
-			switch (Selection)
-			{
-			case 0:
-				SectionName = FName("Attack1");
-				break;
-
-			case 1:
-				SectionName = FName("Attack2");
-				break;
-
-			case 2:
-				SectionName = FName("Attack3");
-				break;
-
-			default:
-				break;
-			}
-			AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
-		}
-	}
-}
-
 void AEnemy::HandleDamage(float DamageAmount)
 {
 	Super::HandleDamage(DamageAmount);
