@@ -72,42 +72,12 @@ void AEnemy::BeginPlay()
 
 void AEnemy::Die()
 {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && DeathMontage)
-	{
-		AnimInstance->Montage_Play(DeathMontage);
-		int32 Selection = FMath::RandRange(0, 2);
-		FName SectionName = FName();
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Death1");
-			DeathPose = EDeathPose::EDP_Death1;
-			break;
-
-		case 1:
-			SectionName = FName("Death2");
-			DeathPose = EDeathPose::EDP_Death2;
-			break;
-
-		case 2:
-			SectionName = FName("Death3");
-			DeathPose = EDeathPose::EDP_Death3;
-			break;
-
-		default:
-			break;
-		}
-		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
-
-		if (IsValid(HealthBarWidget))
-		{
-			HealthBarWidget->SetVisibility(false);
-		}
-
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		SetLifeSpan(5.f);
-	}
+	EnemyState = EEnemyState::EES_Dead;
+	PlayDeathMontage();
+	ClearAttackTimer();
+	HideHealthBar();
+	DisableCapsul();
+	SetLifeSpan(DeathLifeSpan);
 }
 
 void AEnemy::Attack()
@@ -284,6 +254,17 @@ void AEnemy::Destroyed()
 	{
 		EquippedWeapon->Destroy();
 	}
+}
+
+int32 AEnemy::PlayDeathMontage()
+{
+	const int32 selection = Super::PlayDeathMontage();
+	TEnumAsByte<EDeathPose> Pose(selection);
+	if (Pose<EDeathPose::EDP_Max)
+	{
+		DeathPose=Pose;
+	}
+	return selection;
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)

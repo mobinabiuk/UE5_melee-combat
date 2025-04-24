@@ -40,11 +40,16 @@ protected:
 	void CheckCombatTarget();
 	void CheckPatrolTarget();
 	virtual void Destroyed() override;
+	virtual int32 PlayDeathMontage() override;
+
+	UPROPERTY(EditAnywhere, Category=Combat)
+	float DeathLifeSpan =  7.f;
+	
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose;
+	TEnumAsByte<EDeathPose> DeathPose;
 	
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState =EEnemyState::EES_Patrolling;
