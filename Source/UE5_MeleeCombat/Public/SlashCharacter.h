@@ -15,31 +15,45 @@ class UInputAction;
 class AItem;
 class UAnimMontage;
 
-
-
 UCLASS()
 class UE5_MELEECOMBAT_API ASlashCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ASlashCharacter();
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
-    FORCEINLINE	void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
-	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
-
-	
+	virtual void GetHit_Implementation(const FVector& ImpactPoint)override;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+    /** Callbacks for input*/
+	void IAMove(const FInputActionValue& Value);
+	void IALook(const FInputActionValue& Value);
+	void EKeyPressed();
+  	virtual void Attack() override;
+	
+	/** Combat*/
+	void EquipWeapon(AWeapon* Weapon);
+	virtual void AttackEnd() override;
+	virtual bool CanAttack() override;
+	bool CanArm();
+	bool CanDisarm();
 
+	UFUNCTION()
+	void PlayEquipMontage(FName SectionName);
+	
+	UFUNCTION(BlueprintCallable)
+	void AttachWeaponToBack();
+
+	UFUNCTION(BlueprintCallable)
+	void AttachWeaponToHand();
+
+	UFUNCTION(BlueprintCallable)
+	void FinishEquipping();
+	
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
@@ -64,47 +78,21 @@ protected:
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
 	UInputAction* AttackAction;
 
-	/*
-	* Callbacks for input
-	*/
-	void IAMove(const FInputActionValue& Value);
-	void IALook(const FInputActionValue& Value);
-	void EKeyPressed();
-  	virtual void Attack() override;
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* EquipMontage;
+
+	UPROPERTY(VisibleInstanceOnly)
+	AItem* OverlappingItem;
 	
-	/*
-	* play montage functions
-	*/
-	
-	virtual void AttackEnd() override;
-	virtual bool CanAttack() override;
-
-	UFUNCTION()
-	void PlayEquipMontage(FName SectionName);
-	bool CanDisarm();
-	bool CanArm();
-
-	UFUNCTION(BlueprintCallable)
-	void Disarm();
-
-	UFUNCTION(BlueprintCallable)
-	void Arm();
-
-	UFUNCTION(BlueprintCallable)
-	void FinishEquipping();
 private:
 	ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
 
 	UPROPERTY(BlueprintReadWrite,Meta = (AllowPrivateAccess="true"))
 	EActionState ActionState = EActionState::EAS_Unoccupied;
 
-	UPROPERTY(VisibleInstanceOnly)
-	AItem* OverlappingItem;
-
 	
+public:
+	FORCEINLINE	void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 	
-
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* EquipMontage;
-
 };
