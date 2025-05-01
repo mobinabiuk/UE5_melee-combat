@@ -36,6 +36,7 @@ protected:
 	void DisableCapsul();
 	virtual bool CanAttack();
 	bool IsAlive();
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();

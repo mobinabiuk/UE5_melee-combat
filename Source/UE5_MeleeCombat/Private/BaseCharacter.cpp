@@ -54,6 +54,18 @@ bool ABaseCharacter::IsAlive()
 	return Attributes && Attributes->IsAlive();
 }
 
+void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint)
+{
+	IHitInterface::GetHit_Implementation(ImpactPoint);
+	if (IsAlive())
+	{
+		DirectionalHitReact(ImpactPoint);
+	}
+	else Die();
+	PlayHitSound(ImpactPoint);
+	SpawnHitParticles(ImpactPoint);
+}
+
 void ABaseCharacter::AttackEnd()
 {
 	
