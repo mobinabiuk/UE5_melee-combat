@@ -44,6 +44,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState =EEnemyState::EES_Patrolling;
 
+	UPROPERTY(BlueprintReadOnly, Category = Combat)
+	AActor* CombatTarget;
+
 	
 private:
 
@@ -133,8 +136,7 @@ private:
 	UPROPERTY(EditAnywhere, Category=Combat)
 	float DeathLifeSpan =  7.f;
 	
-	UPROPERTY()
-	AActor* CombatTarget;
+	
 	
 	
 };
