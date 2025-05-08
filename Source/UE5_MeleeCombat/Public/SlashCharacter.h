@@ -14,6 +14,7 @@ class UInputMappingContext;
 class UInputAction;
 class AItem;
 class UAnimMontage;
+class USlashOverlay;
 
 UCLASS()
 class UE5_MELEECOMBAT_API ASlashCharacter : public ABaseCharacter
@@ -90,12 +91,19 @@ protected:
 	AItem* OverlappingItem;
 	
 private:
+	
+	void InitializeSlashOverlay();
+	void SetHUDHealth();
+	bool IsUnoccupied();
+	
 	ECharacterState CharacterState = ECharacterState::ECS_UnEquipped;
 
 	UPROPERTY(BlueprintReadWrite,Meta = (AllowPrivateAccess="true"))
 	EActionState ActionState = EActionState::EAS_Unoccupied;
 
-	
+	UPROPERTY()
+	USlashOverlay* SlashOverlay;
+
 public:
 	FORCEINLINE	void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
