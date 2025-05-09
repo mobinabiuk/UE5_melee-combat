@@ -94,8 +94,8 @@ void AEnemy::BeginPlay()
 
 void AEnemy::Die()
 {
+	Super::Die();
 	EnemyState = EEnemyState::EES_Dead;
-	PlayDeathMontage();
 	ClearAttackTimer();
 	HideHealthBar();
 	DisableCapsul();
@@ -318,17 +318,6 @@ void AEnemy::SpawnDefaultWeapon()
 			DefaultWeapon->SetActorScale3D(NewScale);
 		}
 	}
-}
-
-int32 AEnemy::PlayDeathMontage()
-{
-	const int32 selection = Super::PlayDeathMontage();
-	TEnumAsByte<EDeathPose> Pose(selection);
-	if (Pose<EDeathPose::EDP_Max)
-	{
-		DeathPose=Pose;
-	}
-	return selection;
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)

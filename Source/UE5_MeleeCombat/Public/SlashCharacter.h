@@ -44,6 +44,7 @@ protected:
 	virtual bool CanAttack() override;
 	bool CanArm();
 	bool CanDisarm();
+	virtual void Die() override;
 
 	UFUNCTION()
 	void PlayEquipMontage(FName SectionName);
@@ -107,5 +108,6 @@ private:
 public:
 	FORCEINLINE	void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+	FORCEINLINE EActionState GetActionState() const { return ActionState; }
 	
 };
