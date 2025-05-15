@@ -18,8 +18,8 @@ AItem::AItem()
 	SphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
 	SphereCollision->SetupAttachment(GetRootComponent());
 
-	EmbersEffect =CreateDefaultSubobject<UNiagaraComponent>(TEXT("EmbersEffect"));
-	EmbersEffect->SetupAttachment(GetRootComponent());
+	ItemEffect =CreateDefaultSubobject<UNiagaraComponent>(TEXT("EmbersEffect"));
+	ItemEffect->SetupAttachment(GetRootComponent());
 }
 void AItem::BeginPlay()
 {

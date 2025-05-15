@@ -27,6 +27,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 	UStaticMeshComponent* ItemMesh;
 
+	/*Niagara*/
+	UPROPERTY(EditAnywhere, Category = "Niagara")
+	class UNiagaraComponent* ItemEffect;
+
 
 protected:
 	
@@ -54,10 +58,7 @@ protected:
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 	EItemState ItemState= EItemState::EIS_Hovering;
-
-	/*Niagara*/
-	UPROPERTY(EditAnywhere, Category = "Niagara")
-	class UNiagaraComponent* EmbersEffect;
+	
 
 };
 

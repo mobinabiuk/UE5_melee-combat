@@ -43,9 +43,9 @@ void AWeapon::Tick(float DeltaTime)
 
 void AWeapon::DeactivateEmbers()
 {
-    if(IsValid(EmbersEffect))
+    if(IsValid(ItemEffect))
     {
-        EmbersEffect->Deactivate();
+        ItemEffect->Deactivate();
     }
 }
 
