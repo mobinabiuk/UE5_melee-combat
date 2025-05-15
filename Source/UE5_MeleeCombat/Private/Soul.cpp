@@ -2,6 +2,7 @@
 
 
 #include "Soul.h"
+#include "PickupInterface.h"
 
 void ASoul::Tick(float DeltaTime)
 {
@@ -16,6 +17,14 @@ void ASoul::BeginPlay()
 void ASoul::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::OnSphereBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
+	if (PickupInterface)
+	{
+		PickupInterface->AddSouls(this);
+		SpawnPickupSystem();
+		SpawnPickupSound();
+		Destroy();
+	}
+	
 	
 }

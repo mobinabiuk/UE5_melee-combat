@@ -67,8 +67,23 @@ void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* 
 	}
 }
 
+void ASlashCharacter::SetOverlappingItem(AItem* Item)
+{
+	OverlappingItem = Item;
+}
+
+void ASlashCharacter::AddSouls(ASoul* Soul)
+{
+	IPickupInterface::AddSouls(Soul);
+}
+
+void ASlashCharacter::AddGold(ATreasure* Treasure)
+{
+	IPickupInterface::AddGold(Treasure);
+}
+
 float ASlashCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
-	class AController* EventInstigator, AActor* DamageCauser)
+                                  class AController* EventInstigator, AActor* DamageCauser)
 {
 	HandleDamage(DamageAmount);
 	SetHUDHealth();

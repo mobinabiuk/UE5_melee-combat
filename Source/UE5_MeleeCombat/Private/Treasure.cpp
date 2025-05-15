@@ -12,14 +12,7 @@ void ATreasure::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 	if (IsValid(SlashCharcter))
 	{
 		//playing pickup sound
-		if (IsValid(PickupSound))
-		{
-			UGameplayStatics::PlaySoundAtLocation(
-				this,
-				PickupSound,
-				GetActorLocation()
-				);
-		}
+		SpawnPickupSound();
 		Destroy();
 	}
 }

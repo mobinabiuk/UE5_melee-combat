@@ -15,10 +15,7 @@ class UE5_MELEECOMBAT_API ATreasure : public AItem
 	GENERATED_BODY()
 protected:
 	virtual	void OnSphereBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
-
-	/* Sounds */
-	UPROPERTY(EditAnywhere,Category="Sounds")	
-	USoundBase* PickupSound;
+	
 
 	/*Gold Count*/
 	UPROPERTY(EditAnywhere,Category = "Treasure Properties")
