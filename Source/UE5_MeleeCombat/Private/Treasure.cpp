@@ -2,16 +2,16 @@
 
 
 #include "Treasure.h"
-#include "SlashCharacter.h"
-#include "Kismet/GameplayStatics.h"
+#include "PickupInterface.h"
 
 void ATreasure::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ASlashCharacter* SlashCharcter = Cast<ASlashCharacter>(OtherActor);
-	if (IsValid(SlashCharcter))
+	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
+	if (PickupInterface)
 	{
-		//playing pickup sound
+		PickupInterface->AddGold(this);
+
 		SpawnPickupSound();
 		Destroy();
 	}

@@ -8,6 +8,8 @@
 #include "Components/AttributeComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Item.h"
+#include "Soul.h"
+#include "Treasure.h"
 #include "Weapon.h"
 #include "Animation/AnimMontage.h"
 #include "Components/StaticMeshComponent.h"
@@ -74,12 +76,20 @@ void ASlashCharacter::SetOverlappingItem(AItem* Item)
 
 void ASlashCharacter::AddSouls(ASoul* Soul)
 {
-	IPickupInterface::AddSouls(Soul);
+	if (IsValid(Attributes) && IsValid(SlashOverlay))
+	{
+		Attributes->AddSouls(Soul->GetSouls());
+		SlashOverlay->SetSouls(Attributes->GetSouls());
+	}
 }
 
 void ASlashCharacter::AddGold(ATreasure* Treasure)
 {
-	IPickupInterface::AddGold(Treasure);
+	if (IsValid(Attributes) && IsValid(SlashOverlay))
+	{
+		Attributes->AddGold(Treasure->GetGold());
+		SlashOverlay->SetGold(Attributes->GetGold());
+	}
 }
 
 float ASlashCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
