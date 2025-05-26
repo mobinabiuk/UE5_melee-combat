@@ -1,6 +1,7 @@
 
 #include "Enemy.h"
 #include "AIController.h"
+#include "Soul.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
@@ -102,6 +103,22 @@ void AEnemy::Die()
 	SetLifeSpan(DeathLifeSpan);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
+	SpawnSoul();
+}
+
+void AEnemy::SpawnSoul()
+{
+	UWorld* World = GetWorld();
+	if (IsValid(World) && IsValid(SoulClass) && IsValid(Attributes))
+	{
+		const FVector SpawnLocation = GetActorLocation() + FVector(0.f, 0.f, 100.f);
+		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, SpawnLocation, GetActorRotation());
+		if (IsValid(SpawnedSoul))
+		{
+			SpawnedSoul->SetSouls(Attributes->GetSouls());
+			SpawnedSoul->SetOwner(this);
+		}
+	}
 }
 
 void AEnemy::Attack()
