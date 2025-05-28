@@ -96,6 +96,10 @@ void ABaseCharacter::AttackEnd()
 	
 }
 
+void ABaseCharacter::DodgeEnd()
+{
+}
+
 void ABaseCharacter::Die()
 {
 	Tags.Add(FName("Dead"));

@@ -62,7 +62,9 @@ void ASlashCharacter::Jump()
 
 void ASlashCharacter::Dodge()
 {
+	if (ActionState != EActionState::EAS_Unoccupied) return;
 	PlayMontageSection(DodgeMontage, FName("Default"));
+	ActionState = EActionState::EAS_Dodge;
 }
 
 void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
@@ -195,6 +197,12 @@ void ASlashCharacter::EquipWeapon(AWeapon* Weapon)
 void ASlashCharacter::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
+}
+
+void ASlashCharacter::DodgeEnd()
+{
+	Super::DodgeEnd();
+	ActionState =EActionState::EAS_Unoccupied;
 }
 
 bool ASlashCharacter::CanAttack()

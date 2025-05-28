@@ -45,6 +45,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();
 	
+	UFUNCTION(BlueprintCallable)
+	virtual void DodgeEnd();
+	
 	virtual void Die();
 
 	UFUNCTION(BlueprintCallable)
