@@ -26,6 +26,7 @@ class UE5_MELEECOMBAT_API ASlashCharacter : public ABaseCharacter,public IPickup
 
 public:
 	ASlashCharacter();
+	virtual void Tick(float DeltaSeconds) override;
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)override;
@@ -53,6 +54,8 @@ protected:
 	bool CanArm();
 	bool CanDisarm();
 	virtual void Die() override;
+	bool IsOccupied();
+	bool HasEnoughStamina();
 
 	UFUNCTION()
 	void PlayEquipMontage(FName SectionName);
