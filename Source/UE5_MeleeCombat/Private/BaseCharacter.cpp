@@ -50,6 +50,7 @@ int32 ABaseCharacter::PlayDeathMontage()
 	return Selection;
 }
 
+
 void ABaseCharacter::DisableCapsul()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

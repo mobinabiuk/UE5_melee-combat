@@ -41,6 +41,7 @@ protected:
     /** Callbacks for input*/
 	void IAMove(const FInputActionValue& Value);
 	void IALook(const FInputActionValue& Value);
+	void Dodge();
 	void EKeyPressed();
   	virtual void Attack() override;
 	
@@ -91,6 +92,9 @@ protected:
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
 	UInputAction* AttackAction;
 
+	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = "EnhancedInput")
+	UInputAction* DodgeAction;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EquipMontage;
 
@@ -116,3 +120,4 @@ public:
 	FORCEINLINE EActionState GetActionState() const { return ActionState; }
 	
 };
+

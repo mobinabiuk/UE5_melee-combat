@@ -28,6 +28,7 @@ protected:
 	/*play montage functions*/
 	
 	void PlayHitReactMontage(const FName& SectionName);
+	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
 	void DirectionalHitReact(const FVector& ImpactPoint);
 	void PlayHitSound(const FVector& ImpactPoint);
 	void SpawnHitParticles(const FVector& ImpactPoint);
@@ -64,6 +65,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = Combat)
 	AActor* CombatTarget;
+
+	UPROPERTY(EditDefaultsOnly, Category = Combat)
+	UAnimMontage* DodgeMontage;
 	
 	UPROPERTY(EditAnywhere, Category = Combat)
 	double WarpTargetDistance = 75.f;
@@ -72,7 +76,7 @@ protected:
 	TEnumAsByte<EDeathPose> DeathPose;
 
 private:
-	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
+	
 	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);
 	
 	UPROPERTY(EditAnywhere, Category = Combat)
@@ -92,6 +96,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Combat)
 	UAnimMontage* DeathMontage;
+
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TArray<FName> AttackMontageSections;
