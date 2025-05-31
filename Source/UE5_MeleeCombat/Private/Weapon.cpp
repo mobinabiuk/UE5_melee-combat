@@ -101,6 +101,7 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 
     TArray<AActor*> ActorsToIgnore;
     ActorsToIgnore.Add(this);
+    ActorsToIgnore.Add(GetOwner());
 
     // Ignore the owner and instigator
     if (GetOwner())
